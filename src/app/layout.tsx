@@ -67,7 +67,7 @@ export default async function RootLayout({
         <body className="font-body w-full h-full overflow-x-hidden">
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >

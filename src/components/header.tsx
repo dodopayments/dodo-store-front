@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 
 export interface Business {
@@ -19,6 +18,8 @@ const Header = ({ business }: { business: Business }) => {
           alt="Business banner"
           fill
           priority
+          quality={100}
+          sizes="100vw"
           className="object-cover"
         />
       </div>
@@ -30,6 +31,8 @@ const Header = ({ business }: { business: Business }) => {
             alt="Business Logo"
             fill
             priority
+            quality={100}
+            sizes="72px"
             className="object-cover object-center"
           />
         </div>
