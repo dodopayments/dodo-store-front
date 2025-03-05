@@ -72,7 +72,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <NextIntlClientProvider messages={messages}>
-              <main className="mx-auto max-w-[1920px]">
+              <main >
                 <Toaster position="top-right" richColors />
                 {children}
                 <FooterPill align="end" />

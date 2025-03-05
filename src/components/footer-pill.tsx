@@ -22,7 +22,7 @@ const FooterPill = ({
         zIndex: 100,
       }}
     >
-      <Link href="https://dodopayments.com" target="_blank">
+      <Link href="https://dodopayments.com" target="_blank" passHref>
         <div className="flex items-center justify-center bg-bg-secondary  border-border-secondary rounded-lg py-[10px] px-[12px] gap-[6px]">
           <Image
             src="/images/brand-assets/logo/logo.svg"
