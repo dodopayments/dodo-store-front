@@ -5,8 +5,8 @@ export async function middleware(request: NextRequest) {
   const params = requestUrl.pathname.split("/")[1];
   const response = NextResponse.next();
 
-  const host = request.headers.get("x-forwarded-host") || requestUrl.host;
-
+  const host = request.headers.get("host") || requestUrl.host;
+  console.log(host);
   const subdomain = host.split(".")[0];
 
   switch (subdomain) {
