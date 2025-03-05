@@ -8,6 +8,7 @@ import { StoreProvider } from "@/store/provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import FooterPill from "@/components/footer-pill";
+import { CSPostHogProvider } from "@/hooks/posthogProvider";
 
 // Load fonts
 const inter = Inter({
@@ -58,10 +59,11 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <StoreProvider>
-      <html
-        lang="en"
-        className={`${inter.variable} ${gabarito.variable} h-full scroll-div`}
-        suppressHydrationWarning
+      <CSPostHogProvider>
+        <html
+          lang="en"
+          className={`${inter.variable} ${gabarito.variable} h-full scroll-div`}
+          suppressHydrationWarning
       >
        
         <body className="font-body w-full h-full overflow-x-hidden">
@@ -79,8 +81,9 @@ export default async function RootLayout({
               </main>
             </NextIntlClientProvider>
           </ThemeProvider>
-        </body>
-      </html>
+          </body>
+        </html>
+      </CSPostHogProvider>
     </StoreProvider>
   );
 }

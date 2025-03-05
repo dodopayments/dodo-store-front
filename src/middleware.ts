@@ -6,9 +6,7 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   const host = request.headers.get("host") || requestUrl.host;
-  console.log(host);
   const subdomain = host.split(".")[0];
-  console.log(subdomain);
   switch (subdomain) {
     case "test":
       response.cookies.set("mode", "test");
