@@ -12,7 +12,7 @@ import {
   decodeCurrency,
   formatCurrency,
 } from "@/lib/currency-helper";
-import getConstants from "@/lib/http";
+import getConstantsClient from "@/lib/httpClient";
 
 export interface ProductCardProps {
   product_id: string;
@@ -149,7 +149,7 @@ export function ProductCard({
   }, [quantity]);
 
   const handleCheckout = useCallback(async () => {
-    const { checkoutUrl } = await getConstants();
+    const { checkoutUrl } = await getConstantsClient();
     window.location.href = `${checkoutUrl}/buy/${product_id}?quantity=${quantity}`;
   }, [quantity, product_id]);
 

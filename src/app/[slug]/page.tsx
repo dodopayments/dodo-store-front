@@ -9,6 +9,7 @@ import {
   OneTimeProductApiResponse,
   RecurringProductApiResponse,
 } from "@/type/product";
+import Banner from "@/components/ui/dodoui/banner";
 
 export async function generateMetadata() {
   try {
@@ -143,6 +144,7 @@ export default async function Page() {
 
   return (
     <main className="min-h-screen bg-bg-primary">
+      <Banner/>
       <Header business={business} />
       <section className="flex flex-col pb-20 items-center max-w-[1145px] mx-auto justify-center mt-10 px-4">
         <Suspense fallback={<ProductLoadingState />}>
