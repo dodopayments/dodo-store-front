@@ -7,6 +7,18 @@ import { LinkBreak } from "@phosphor-icons/react/dist/ssr";
 import LoadingShimmer from "@/components/LoadingShimmer";
 import { OneTimeProductApiResponse, RecurringProductApiResponse } from "@/type/product";
 
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const { slug } = await params;
+  const { api } = await getConstants();
+  const response = await api.get(`/storefront/${slug}`);
+
+  return {
+    title: response.data.name,
+    description: response.data.description,
+  }
+}
+
 async function getBusiness(): Promise<Business | null> {
   try {
     const cookieStore = await cookies();
@@ -19,6 +31,7 @@ async function getBusiness(): Promise<Business | null> {
     const { api } = await getConstants();
     const response = await api.get(`/storefront/${slug}`);
     return response.data;
+    
   } catch (error) {
     console.error("Error fetching business:", error);
     return null;

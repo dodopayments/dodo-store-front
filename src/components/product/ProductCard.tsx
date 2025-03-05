@@ -82,9 +82,9 @@ const ProductImage = memo(function ProductImage({
       }}
     >
       {showDescription ? (
-        <X className="w-4 text-text-primary h-4" />
+        <X className="w-5 text-text-primary h-5" />
       ) : (
-        <Info className="w-4 text-text-primary h-4" />
+        <Info className="w-5 text-text-primary h-5" />
       )}
     </button>
   );
@@ -139,10 +139,12 @@ export function ProductCard({
     []
   );
 
-  const handleDecrement = useCallback(
-    () => setQuantity((prev) => Math.max(1, prev - 1)),
-    []
-  );
+  const handleDecrement = useCallback(() => {
+    setQuantity((prev) => Math.max(0, prev - 1));
+    if (quantity === 1) {
+      setCheckout(false);
+    }
+  }, [quantity]);
 
   const handleCheckout = useCallback(async () => {
     const { checkoutUrl } = await getConstants();
@@ -169,7 +171,7 @@ export function ProductCard({
   };
 
   const toggleDescription = useCallback(() => {
-    setShowDescription(prev => !prev);
+    setShowDescription((prev) => !prev);
   }, []);
 
   return (
@@ -223,7 +225,10 @@ export function ProductCard({
             className="flex items-center gap-2 mt-5 justify-between"
           >
             <Button
-              onClick={() => setCheckout(true)}
+              onClick={() => {
+                setCheckout(true);
+                setQuantity(1);
+              }}
               variant="secondary"
               className="w-full"
               iconPlacement="right"
