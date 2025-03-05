@@ -5,18 +5,21 @@ import { cookies } from "next/headers";
 import getConstants from "@/lib/http";
 import { LinkBreak } from "@phosphor-icons/react/dist/ssr";
 import LoadingShimmer from "@/components/LoadingShimmer";
-import { OneTimeProductApiResponse, RecurringProductApiResponse } from "@/type/product";
+import {
+  OneTimeProductApiResponse,
+  RecurringProductApiResponse,
+} from "@/type/product";
 
-
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = await params;
+export async function generateMetadata() {
+  const cookieStore = await cookies();
+  const slug = cookieStore.get("slug")?.value;
   const { api } = await getConstants();
   const response = await api.get(`/storefront/${slug}`);
 
   return {
     title: response.data.name,
     description: response.data.description,
-  }
+  };
 }
 
 async function getBusiness(): Promise<Business | null> {
@@ -31,7 +34,6 @@ async function getBusiness(): Promise<Business | null> {
     const { api } = await getConstants();
     const response = await api.get(`/storefront/${slug}`);
     return response.data;
-    
   } catch (error) {
     console.error("Error fetching business:", error);
     return null;
@@ -61,15 +63,17 @@ async function ProductSection() {
     },
   });
 
-  const products = response.data.items.map((product: OneTimeProductApiResponse) => ({
-    product_id: product.product_id,
-    name: product.name,
-    image: product.image,
-    price: product.price,
-    pay_what_you_want: product.price_detail?.pay_what_you_want,
-    description: product.description,
-    currency: product.currency,
-  }));
+  const products = response.data.items.map(
+    (product: OneTimeProductApiResponse) => ({
+      product_id: product.product_id,
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      pay_what_you_want: product.price_detail?.pay_what_you_want,
+      description: product.description,
+      currency: product.currency,
+    })
+  );
 
   if (products.length === 0) return null;
 
@@ -89,17 +93,20 @@ async function SubscriptionSection() {
     },
   });
 
-  const subscriptions = response.data.items.map((product: RecurringProductApiResponse) => ({
-    product_id: product.product_id,
-    name: product.name,
-    image: product.image,
-    price: product.price,
-    description: product.description,
-    currency: product.currency,
-    payment_frequency_count: product.price_detail?.payment_frequency_count,
-    payment_frequency_interval: product.price_detail?.payment_frequency_interval,
-    trial_period_days: product.price_detail?.trial_period_days,
-  }));
+  const subscriptions = response.data.items.map(
+    (product: RecurringProductApiResponse) => ({
+      product_id: product.product_id,
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      description: product.description,
+      currency: product.currency,
+      payment_frequency_count: product.price_detail?.payment_frequency_count,
+      payment_frequency_interval:
+        product.price_detail?.payment_frequency_interval,
+      trial_period_days: product.price_detail?.trial_period_days,
+    })
+  );
 
   if (subscriptions.length === 0) return null;
 
@@ -116,7 +123,9 @@ export default async function Page() {
           <LinkBreak className="w-6 h-6" />
         </div>
         <div className="text-center p-8">
-          <h1 className="text-2xl font-semibold font-display mb-2">Storefront Not Found</h1>
+          <h1 className="text-2xl font-semibold font-display mb-2">
+            Storefront Not Found
+          </h1>
           <p className="text-text-secondary">
             This storefront does not exist or is no longer available.
           </p>
