@@ -66,6 +66,7 @@ async function ProductSection() {
     name: product.name,
     image: product.image,
     price: product.price,
+    pay_what_you_want: product.price_detail?.pay_what_you_want,
     description: product.description,
     currency: product.currency,
   }));

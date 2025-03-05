@@ -21,6 +21,7 @@ export interface ProductCardProps {
   description: string;
   discount?: number;
   image?: string;
+  pay_what_you_want?: boolean;
   currency?: string;
   payment_frequency_count?: number;
   payment_frequency_interval?: string;
@@ -59,11 +60,11 @@ const ProductImage = memo(function ProductImage({
         >
           <div className="flex w-full h-full items-center justify-start relative flex-col gap-2">
             <p className="text-text-primary text-sm">{description}</p>
-            {trial_period_days && (
+            {trial_period_days && trial_period_days > 0 ? (
               <p className="text-text-primary absolute bottom-0 left-0 border-2 border-border-secondary dark:border-border-primary rounded-md p-1 px-2 text-xs">
                 {trial_period_days} day trial
               </p>
-            )}
+            ) : null}
           </div>
         </motion.div>
       )}
@@ -127,6 +128,7 @@ export function ProductCard({
   image,
   currency,
   payment_frequency_count,
+  pay_what_you_want,
   payment_frequency_interval,
   trial_period_days,
 }: ProductCardProps) {
@@ -167,7 +169,7 @@ export function ProductCard({
     const finalPrice = discount
       ? basePrice - basePrice * (discount / 100)
       : basePrice;
-    return formatCurrency(finalPrice, currency as CurrencyCode);
+    return formatCurrency(finalPrice, currency as CurrencyCode) + (pay_what_you_want ? "+" : "");
   };
 
   const toggleDescription = useCallback(() => {
@@ -200,7 +202,7 @@ export function ProductCard({
                 )}
               </p>
               <div className="flex items-baseline gap-1">
-                <p className="text-sm font-medium">{getPrice()}</p>
+                <p className="text-sm font-medium">{getPrice() }</p>
                 <p className="text-xs text-text-secondary">
                   {formatFrequency()}
                 </p>
@@ -257,7 +259,7 @@ export function ProductCard({
               variant="secondary"
               onClick={handleCheckout}
             >
-              Confirm
+              Buy now
             </Button>
           </motion.div>
         )}
