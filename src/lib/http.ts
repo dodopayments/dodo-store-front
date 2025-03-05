@@ -1,5 +1,6 @@
+"use server";
 import axios from "axios";
-import { getCookie } from 'cookies-next/client';
+import { cookies } from "next/headers";
 
 const testApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TEST_API_URL,
@@ -16,25 +17,20 @@ const liveApi = axios.create({
 });
 
 const getConstants = async () => {
-  const mode =  getCookie("mode");
+  const cookieStore = await cookies();
+  const mode = cookieStore.get("mode")?.value;
   let api;
   let checkoutUrl;
   let url;
-  switch (mode) {
-    case "test":
-      api = testApi;
-      url = process.env.NEXT_PUBLIC_TEST_API_URL;
-      checkoutUrl = process.env.NEXT_PUBLIC_TEST_CHECKOUT_URL;
-      break;
-    case "live":
-      api = liveApi;
-      url = process.env.NEXT_PUBLIC_LIVE_API_URL;
-      checkoutUrl = process.env.NEXT_PUBLIC_LIVE_CHECKOUT_URL;
-      break;
-    default:
-      api = testApi;
-      url = process.env.NEXT_PUBLIC_TEST_API_URL;
-      checkoutUrl = process.env.NEXT_PUBLIC_TEST_CHECKOUT_URL;
+
+  if (mode === "live") {
+    api = liveApi;
+    url = process.env.NEXT_PUBLIC_LIVE_API_URL;
+    checkoutUrl = process.env.NEXT_PUBLIC_LIVE_CHECKOUT_URL;
+  } else {
+    api = testApi;
+    url = process.env.NEXT_PUBLIC_TEST_API_URL;
+    checkoutUrl = process.env.NEXT_PUBLIC_TEST_CHECKOUT_URL;
   }
 
   return {
@@ -43,6 +39,6 @@ const getConstants = async () => {
     checkoutUrl,
     url,
   };
-}
+};
 
 export default getConstants;
