@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Info, X } from "@phosphor-icons/react";
@@ -35,15 +35,18 @@ interface ProductImageProps {
   trial_period_days?: number;
 }
 
-function ProductImage({
+const ProductImage = memo(function ProductImage({
   image,
   name,
   description,
   product_id,
   trial_period_days,
-}: ProductImageProps) {
-  const [showDescription, setShowDescription] = useState(false);
-
+  showDescription,
+  onToggleDescription,
+}: ProductImageProps & {
+  showDescription: boolean;
+  onToggleDescription: () => void;
+}) {
   const DescriptionOverlay = () => (
     <AnimatePresence>
       {showDescription && (
@@ -69,7 +72,8 @@ function ProductImage({
 
   const ToggleButton = () => (
     <button
-      onClick={() => setShowDescription(!showDescription)}
+      onClick={onToggleDescription}
+      type="button"
       className="absolute z-30 bg-bg-secondary p-1 bottom-0 right-0"
       aria-label={showDescription ? "Hide description" : "Show description"}
       style={{
@@ -112,7 +116,7 @@ function ProductImage({
       <ToggleButton />
     </div>
   );
-}
+});
 
 export function ProductCard({
   product_id,
@@ -128,6 +132,7 @@ export function ProductCard({
 }: ProductCardProps) {
   const [checkout, setCheckout] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [showDescription, setShowDescription] = useState(false);
 
   const handleIncrement = useCallback(
     () => setQuantity((prev) => prev + 1),
@@ -163,6 +168,10 @@ export function ProductCard({
     return formatCurrency(finalPrice, currency as CurrencyCode);
   };
 
+  const toggleDescription = useCallback(() => {
+    setShowDescription(prev => !prev);
+  }, []);
+
   return (
     <div className="p-4 w-full sm:w-[260px] border border-border-tertiary bg-bg-primary rounded-lg flex flex-col">
       <ProductImage
@@ -171,6 +180,8 @@ export function ProductCard({
         name={name}
         trial_period_days={trial_period_days}
         description={description}
+        showDescription={showDescription}
+        onToggleDescription={toggleDescription}
       />
 
       <div className="flex flex-col bg-bg-primary gap-0 mt-6">
