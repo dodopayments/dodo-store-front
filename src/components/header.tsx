@@ -15,7 +15,7 @@ const Header = ({ business }: { business: Business }) => {
     <header className="relative w-full">
       <div className="relative h-[35dvh] md:h-[30dvh] w-full">
         <Image
-          src={business.banner}
+          src={business.banner || "/banner.png"}
           alt="Business banner"
           fill
           priority
