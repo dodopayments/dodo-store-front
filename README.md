@@ -1,4 +1,4 @@
-# Dodo Payments Store Frontgit init
+# Dodo Payments Store Front
 
 ## Getting Started
 
