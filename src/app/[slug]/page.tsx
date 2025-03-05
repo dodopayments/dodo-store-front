@@ -11,15 +11,22 @@ import {
 } from "@/type/product";
 
 export async function generateMetadata() {
-  const cookieStore = await cookies();
-  const slug = cookieStore.get("slug")?.value;
-  const { api } = await getConstants();
-  const response = await api.get(`/storefront/${slug}`);
+  try {
+    const cookieStore = await cookies();
+    const slug = cookieStore.get("slug")?.value;
+    const { api } = await getConstants();
+    const response = await api.get(`/storefront/${slug}`);
 
-  return {
-    title: response.data.name,
-    description: response.data.description,
-  };
+    return {
+      title: response.data.name || "Dodopayment Storefront",
+      description: response.data.description || "Dodopayment Storefront",
+    };
+  } catch {
+    return {
+      title: "Dodopayment Storefront",
+      description: "Dodopayment Storefront",
+    };
+  }
 }
 
 async function getBusiness(): Promise<Business | null> {

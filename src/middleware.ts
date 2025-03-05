@@ -4,6 +4,8 @@ export async function middleware(request: NextRequest) {
   const requestUrl = request.nextUrl;
   const params = requestUrl.pathname.split("/")[1];
   const response = NextResponse.next();
+  console.log(requestUrl.host);
+  
   switch (requestUrl.host.split(".")[0] || "test") {
     case "test":
       response.cookies.set("mode", "test");
