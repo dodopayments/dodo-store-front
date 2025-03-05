@@ -4,16 +4,12 @@ export async function middleware(request: NextRequest) {
   const requestUrl = request.nextUrl;
   const params = requestUrl.pathname.split("/")[1];
   const response = NextResponse.next();
-  
-  // Add debug logging to see all relevant URL information
-  console.log({
-    host: requestUrl.host,
-    hostname: requestUrl.hostname,
-    fullUrl: request.url,
-    headers: Object.fromEntries(request.headers.entries())
-  });
-  
-  switch (requestUrl.host.split(".")[0] || "test") {
+
+  const host = request.headers.get("x-forwarded-host") || requestUrl.host;
+
+  const subdomain = host.split(".")[0];
+
+  switch (subdomain) {
     case "test":
       response.cookies.set("mode", "test");
       response.cookies.set("slug", params ?? "");
