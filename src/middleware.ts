@@ -4,7 +4,14 @@ export async function middleware(request: NextRequest) {
   const requestUrl = request.nextUrl;
   const params = requestUrl.pathname.split("/")[1];
   const response = NextResponse.next();
-  console.log(requestUrl.host);
+  
+  // Add debug logging to see all relevant URL information
+  console.log({
+    host: requestUrl.host,
+    hostname: requestUrl.hostname,
+    fullUrl: request.url,
+    headers: Object.fromEntries(request.headers.entries())
+  });
   
   switch (requestUrl.host.split(".")[0] || "test") {
     case "test":
