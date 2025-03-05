@@ -6,11 +6,11 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   switch (requestUrl.host) {
-    case "test.store.dodopayments.tech":
+    case process.env.NEXT_PUBLIC_TEST_STORE_URL:
       response.cookies.set("mode", "test");
       response.cookies.set("slug", params ?? "");
       return NextResponse.rewrite(request.url, response);
-    case "store.dodopayments.tech":
+    case process.env.NEXT_PUBLIC_LIVE_STORE_URL:
       response.cookies.set("mode", "live");
       response.cookies.set("slug", params ?? "");
       return NextResponse.rewrite(request.url, response);
