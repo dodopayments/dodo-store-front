@@ -1,8 +1,10 @@
-import getConstants from "@/lib/http";
+
 import Link from "next/link";
 import React from "react";
-const Banner = async () => {
-  const { mode } = await getConstants();
+import { useStorefront } from "@/hooks/useStorefront";
+
+const Banner =  () => {
+  const { mode } = useStorefront();
 
   if (mode == "live") return null;
   return (
