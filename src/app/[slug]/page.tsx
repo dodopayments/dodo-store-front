@@ -1,127 +1,73 @@
+'use client';
+import { useEffect, useState } from 'react';
 import Header, { Business } from "@/components/header";
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { Suspense } from "react";
 
-import { getServerConfig } from "@/lib/http";
 import { LinkBreak } from "@phosphor-icons/react/dist/ssr";
-import LoadingShimmer from "@/components/LoadingShimmer";
+import LoadingOverlay from "@/components/loading-overlay";
 import {
   OneTimeProductApiResponse,
   RecurringProductApiResponse,
 } from "@/type/product";
 import Banner from "@/components/ui/dodoui/banner";
+import { ProductCardProps } from '@/components/product/ProductCard';
+import { useStorefront } from '@/hooks/useStorefront';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  try {
-    const { slug } = await params;
-    const { api } = await getServerConfig();
-    const response = await api.get(`/storefront/${slug}`);
+export default function Page() {
+  const { api, slug, isLoading } = useStorefront();
+  const [business, setBusiness] = useState<Business | null>(null);
+  const [products, setProducts] = useState<ProductCardProps[]>([]);
+  const [subscriptions, setSubscriptions] = useState<ProductCardProps[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    return {
-      title: response.data.name || "Dodopayment Storefront",
-      description: response.data.description || "Dodopayment Storefront",
-    };
-  } catch {
-    return {
-      title: "Dodopayment Storefront",
-      description: "Dodopayment Storefront",
-    };
-  }
-}
+  useEffect(() => {
+    if (!isLoading && slug) {
+      const fetchData = async () => {
+        try {
+          const [businessRes, productsRes, subscriptionsRes] = await Promise.all([
+            api.get(`/storefront/${slug}`),
+            api.get(`/storefront/${slug}/products`, { params: { recurring: false } }),
+            api.get(`/storefront/${slug}/products`, { params: { recurring: true } })
+          ]);
 
-async function getBusiness(slug: string): Promise<Business | null> {
-  try {
-    if (!slug) {
-      return null;
+          setBusiness(businessRes.data);
+          
+          setProducts(productsRes.data.items.map((product: OneTimeProductApiResponse) => ({
+            product_id: product.product_id,
+            name: product.name,
+            image: product.image,
+            price: product.price,
+            pay_what_you_want: product.price_detail?.pay_what_you_want,
+            description: product.description,
+            currency: product.currency,
+          })));
+
+          setSubscriptions(subscriptionsRes.data.items.map((product: RecurringProductApiResponse) => ({
+            product_id: product.product_id,
+            name: product.name,
+            image: product.image,
+            price: product.price,
+            description: product.description,
+            currency: product.currency,
+            payment_frequency_count: product.price_detail?.payment_frequency_count,
+            payment_frequency_interval: product.price_detail?.payment_frequency_interval,
+            trial_period_days: product.price_detail?.trial_period_days,
+          })));
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setBusiness(null);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
     }
+  }, [api, slug, isLoading]);
 
-    const { api } = await getServerConfig();
-    const response = await api.get(`/storefront/${slug}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching business:", error);
-    return null;
+  if (loading || isLoading) {
+    return <LoadingOverlay />;
   }
-}
-
-function ProductLoadingState() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[...Array(3)].map((_, i) => (
-        <LoadingShimmer key={i} />
-      ))}
-    </div>
-  );
-}
-
-async function ProductSection({ slug }: { slug: string }) {
-  if (!slug) return null;
-
-  const { api } = await getServerConfig();
-  const response = await api.get(`/storefront/${slug}/products`, {
-    params: {
-      recurring: false,
-    },
-  });
-
-  const products = response.data.items.map(
-    (product: OneTimeProductApiResponse) => ({
-      product_id: product.product_id,
-      name: product.name,
-      image: product.image,
-      price: product.price,
-      pay_what_you_want: product.price_detail?.pay_what_you_want,
-      description: product.description,
-      currency: product.currency,
-    })
-  );
-
-  if (products.length === 0) return null;
-
-  return <ProductGrid title="Products" products={products} />;
-}
-
-async function SubscriptionSection({ slug }: { slug: string }) {
-  if (!slug) return null;
-
-  const { api } = await getServerConfig();
-  const response = await api.get(`/storefront/${slug}/products`, {
-    params: {
-      recurring: true,
-    },
-  });
-
-  const subscriptions = response.data.items.map(
-    (product: RecurringProductApiResponse) => ({
-      product_id: product.product_id,
-      name: product.name,
-      image: product.image,
-      price: product.price,
-      description: product.description,
-      currency: product.currency,
-      payment_frequency_count: product.price_detail?.payment_frequency_count,
-      payment_frequency_interval:
-        product.price_detail?.payment_frequency_interval,
-      trial_period_days: product.price_detail?.trial_period_days,
-    })
-  );
-
-  if (subscriptions.length === 0) return null;
-
-  return <ProductGrid title="Subscriptions" products={subscriptions} />;
-}
-
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const business = await getBusiness(slug);
 
   if (!business) {
     return (
@@ -143,18 +89,16 @@ export default async function Page({
 
   return (
     <main className="min-h-screen bg-bg-primary">
-      <Banner />
+      <Banner/>
       <Header business={business} />
       <section className="flex flex-col pb-20 items-center max-w-[1145px] mx-auto justify-center mt-10 px-4">
-        <Suspense fallback={<ProductLoadingState />}>
-          <ProductSection slug={slug} />
-        </Suspense>
-
-        <div className="mt-8 w-full">
-          <Suspense fallback={<ProductLoadingState />}>
-            <SubscriptionSection slug={slug} />
-          </Suspense>
-        </div>
+        {products.length > 0 && <ProductGrid title="Products" products={products} />}
+        
+        {subscriptions.length > 0 && (
+          <div className="mt-8 w-full">
+            <ProductGrid title="Subscriptions" products={subscriptions} />
+          </div>
+        )}
       </section>
     </main>
   );
