@@ -1,44 +1,36 @@
 "use server";
 import axios from "axios";
-import { cookies } from "next/headers";
+import { headers } from 'next/headers';
+import { parseHostname } from "./parse-hostname";
 
-const testApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_TEST_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-const liveApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_LIVE_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-const getConstants = async () => {
-  const cookieStore = await cookies();
-  const mode = cookieStore.get("mode")?.value;
-  let api;
-  let checkoutUrl;
-  let url;
-
-  if (mode === "live") {
-    api = liveApi;
-    url = process.env.NEXT_PUBLIC_LIVE_API_URL;
-    checkoutUrl = process.env.NEXT_PUBLIC_LIVE_CHECKOUT_URL;
-  } else {
-    api = testApi;
-    url = process.env.NEXT_PUBLIC_TEST_API_URL;
-    checkoutUrl = process.env.NEXT_PUBLIC_TEST_CHECKOUT_URL;
-  }
-
-  return {
-    api,
-    mode,
-    checkoutUrl,
-    url,
-  };
+const createApiInstance = (baseURL: string) => {
+  return axios.create({
+    baseURL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
-export default getConstants;
+export async function getServerConfig() {
+  const headersList = await headers();
+  const hostname = headersList.get('host') || '';
+  const { mode } = parseHostname(hostname);
+
+  const config = {
+    api: mode === 'live' 
+      ? createApiInstance(process.env.NEXT_PUBLIC_LIVE_API_URL!)
+      : createApiInstance(process.env.NEXT_PUBLIC_TEST_API_URL!),
+    mode,
+    checkoutUrl: mode === 'live'
+      ? process.env.NEXT_PUBLIC_LIVE_CHECKOUT_URL
+      : process.env.NEXT_PUBLIC_TEST_CHECKOUT_URL,
+    url: mode === 'live'
+      ? process.env.NEXT_PUBLIC_LIVE_API_URL
+      : process.env.NEXT_PUBLIC_TEST_API_URL,
+  };
+
+  return config;
+}
+
+export default getServerConfig;
