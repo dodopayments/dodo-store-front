@@ -21,6 +21,8 @@ const gabarito = Gabarito({
   variable: "--font-gabarito",
 });
 
+
+
 export const metadata: Metadata = {
   title: "Dodo Payments",
   description: "Launch and Accept Global Payments in less than 60 minutes",
