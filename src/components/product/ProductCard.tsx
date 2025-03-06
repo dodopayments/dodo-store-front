@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Info, X } from "@phosphor-icons/react";
 import { ProductQuantityControl } from "./ProductQuantityControl";
-import { getRandomGradient } from "@/lib/gradients";
 import Image from "next/image";
 import {
   CurrencyCode,
@@ -32,7 +31,6 @@ interface ProductImageProps {
   image?: string;
   name: string;
   description: string;
-  product_id: string;
   trial_period_days?: number;
 }
 
@@ -40,7 +38,6 @@ const ProductImage = memo(function ProductImage({
   image,
   name,
   description,
-  product_id,
   trial_period_days,
   showDescription,
   onToggleDescription,
@@ -90,29 +87,16 @@ const ProductImage = memo(function ProductImage({
     </button>
   );
 
-  if (image) {
-    return (
-      <div className="relative overflow-hidden aspect-square w-full">
-        <Image
-          className="rounded-lg z-10 object-cover object-center"
-          src={image}
-          alt={name}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority={false}
-        />
-        <DescriptionOverlay />
-        <ToggleButton />
-      </div>
-    );
-  }
-
   return (
-    <div
-      className={`rounded-lg relative aspect-square w-full ${getRandomGradient(
-        product_id
-      )}`}
-    >
+    <div className="relative overflow-hidden aspect-square w-full">
+      <Image
+        className="rounded-lg z-10 object-cover object-center"
+        src={image || "/placeholder.png"}
+        alt={name}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        priority={false}
+      />
       <DescriptionOverlay />
       <ToggleButton />
     </div>
@@ -169,7 +153,10 @@ export function ProductCard({
     const finalPrice = discount
       ? basePrice - basePrice * (discount / 100)
       : basePrice;
-    return formatCurrency(finalPrice, currency as CurrencyCode) + (pay_what_you_want ? "+" : "");
+    return (
+      formatCurrency(finalPrice, currency as CurrencyCode) +
+      (pay_what_you_want ? "+" : "")
+    );
   };
 
   const toggleDescription = useCallback(() => {
@@ -179,7 +166,6 @@ export function ProductCard({
   return (
     <div className="p-4 w-full sm:w-[260px] border border-border-tertiary bg-bg-primary rounded-lg flex flex-col">
       <ProductImage
-        product_id={product_id}
         image={image}
         name={name}
         trial_period_days={trial_period_days}
@@ -202,7 +188,7 @@ export function ProductCard({
                 )}
               </p>
               <div className="flex items-baseline gap-1">
-                <p className="text-sm font-medium">{getPrice() }</p>
+                <p className="text-sm font-medium">{getPrice()}</p>
                 <p className="text-xs text-text-secondary">
                   {formatFrequency()}
                 </p>
