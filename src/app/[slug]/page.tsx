@@ -1,8 +1,8 @@
 import Header, { Business } from "@/components/header";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Suspense } from "react";
-import { cookies } from "next/headers";
-import getConstants from "@/lib/http";
+
+import { getServerConfig } from "@/lib/http";
 import { LinkBreak } from "@phosphor-icons/react/dist/ssr";
 import LoadingShimmer from "@/components/LoadingShimmer";
 import {
@@ -11,11 +11,14 @@ import {
 } from "@/type/product";
 import Banner from "@/components/ui/dodoui/banner";
 
-export async function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   try {
-    const cookieStore = await cookies();
-    const slug = cookieStore.get("slug")?.value;
-    const { api } = await getConstants();
+    const { slug } = await params;
+    const { api } = await getServerConfig();
     const response = await api.get(`/storefront/${slug}`);
 
     return {
@@ -30,16 +33,13 @@ export async function generateMetadata() {
   }
 }
 
-async function getBusiness(): Promise<Business | null> {
+async function getBusiness(slug: string): Promise<Business | null> {
   try {
-    const cookieStore = await cookies();
-    const slug = cookieStore.get("slug")?.value;
-
     if (!slug) {
       return null;
     }
 
-    const { api } = await getConstants();
+    const { api } = await getServerConfig();
     const response = await api.get(`/storefront/${slug}`);
     return response.data;
   } catch (error) {
@@ -58,13 +58,10 @@ function ProductLoadingState() {
   );
 }
 
-async function ProductSection() {
-  const cookieStore = await cookies();
-  const slug = cookieStore.get("slug")?.value;
-
+async function ProductSection({ slug }: { slug: string }) {
   if (!slug) return null;
 
-  const { api } = await getConstants();
+  const { api } = await getServerConfig();
   const response = await api.get(`/storefront/${slug}/products`, {
     params: {
       recurring: false,
@@ -88,13 +85,10 @@ async function ProductSection() {
   return <ProductGrid title="Products" products={products} />;
 }
 
-async function SubscriptionSection() {
-  const cookieStore = await cookies();
-  const slug = cookieStore.get("slug")?.value;
-
+async function SubscriptionSection({ slug }: { slug: string }) {
   if (!slug) return null;
 
-  const { api } = await getConstants();
+  const { api } = await getServerConfig();
   const response = await api.get(`/storefront/${slug}/products`, {
     params: {
       recurring: true,
@@ -121,8 +115,13 @@ async function SubscriptionSection() {
   return <ProductGrid title="Subscriptions" products={subscriptions} />;
 }
 
-export default async function Page() {
-  const business = await getBusiness();
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const business = await getBusiness(slug);
 
   if (!business) {
     return (
@@ -144,16 +143,16 @@ export default async function Page() {
 
   return (
     <main className="min-h-screen bg-bg-primary">
-      <Banner/>
+      <Banner />
       <Header business={business} />
       <section className="flex flex-col pb-20 items-center max-w-[1145px] mx-auto justify-center mt-10 px-4">
         <Suspense fallback={<ProductLoadingState />}>
-          <ProductSection />
+          <ProductSection slug={slug} />
         </Suspense>
 
         <div className="mt-8 w-full">
           <Suspense fallback={<ProductLoadingState />}>
-            <SubscriptionSection />
+            <SubscriptionSection slug={slug} />
           </Suspense>
         </div>
       </section>
