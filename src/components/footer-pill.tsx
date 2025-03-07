@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+
 import Link from "next/link";
 import React from "react";
 
@@ -15,7 +16,7 @@ const FooterPill = ({
         {
           "justify-center": align === "center",
           "justify-start": align === "start",
-          "justify-end": align === "end"
+          "justify-end": align === "end",
         }
       )}
       style={{
@@ -24,11 +25,12 @@ const FooterPill = ({
     >
       <Link href="https://dodopayments.com" target="_blank" passHref>
         <div className="flex items-center justify-center bg-bg-secondary  border-border-secondary rounded-lg py-[10px] px-[12px] gap-[6px]">
-          <Image
+          <img
             src="/images/brand-assets/logo/logo.svg"
             alt="logo"
             width={20}
             height={20}
+            className="object-cover object-center"
           />
           <p className="text-sm w-full text-nowrap font-light tracking-[-0.22px] font-display">
             Powered by Dodo Payments
