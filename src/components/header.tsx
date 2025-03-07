@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 
 export interface Business {
   banner: string;
@@ -13,26 +13,20 @@ const Header = ({ business }: { business: Business }) => {
   return (
     <header className="relative w-full">
       <div className="relative h-[35dvh] md:h-[30dvh] w-full">
-        <Image
+        <img
           src={business.banner || "/banner.png"}
           alt="Business banner"
-          fill
-          priority
-          quality={100}
-          sizes="100vw"
-          className="object-cover"
+          className="object-cover object-center w-full h-full"
         />
       </div>
 
       <section className="relative flex flex-col items-center px-4">
         <div className="absolute -top-0 -translate-y-1/2 w-[72px] h-[72px] rounded-full overflow-hidden shadow-bg-primary/50 shadow-md">
-          <Image
+          <img
             src={business.logo}
             alt="Business Logo"
-            fill
-            priority
-            quality={100}
-            sizes="72px"
+            width={72}
+            height={72}
             className="object-cover object-center"
           />
         </div>

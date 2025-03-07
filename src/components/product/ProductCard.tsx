@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useCallback, memo } from "react";
@@ -5,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Info, X } from "@phosphor-icons/react";
 import { ProductQuantityControl } from "./ProductQuantityControl";
-import Image from "next/image";
+
 import {
   CurrencyCode,
   decodeCurrency,
@@ -89,13 +90,10 @@ const ProductImage = memo(function ProductImage({
 
   return (
     <div className="relative overflow-hidden aspect-square w-full">
-      <Image
+      <img
         className="rounded-lg z-10 object-cover object-center"
         src={image || "/placeholder.png"}
         alt={name}
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={false}
       />
       <DescriptionOverlay />
       <ToggleButton />
@@ -133,7 +131,6 @@ export function ProductCard({
   }, [quantity]);
 
   const handleCheckout = useCallback(async () => {
-   
     window.location.href = `${checkoutUrl}/buy/${product_id}?quantity=${quantity}`;
   }, [quantity, product_id, checkoutUrl]);
 
