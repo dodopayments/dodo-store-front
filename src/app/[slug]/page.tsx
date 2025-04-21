@@ -29,10 +29,10 @@ export default function Page() {
             await Promise.all([
               api.get(`/storefront/${slug}`),
               api.get(`/storefront/${slug}/products`, {
-                params: { recurring: false },
+                params: { recurring: false, page_size: 100 },
               }),
               api.get(`/storefront/${slug}/products`, {
-                params: { recurring: true },
+                params: { recurring: true, page_size: 100 },
               }),
             ]);
 
