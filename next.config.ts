@@ -11,8 +11,21 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+    formats: ["image/avif", "image/webp"],
   },
-  /* config options here */
+  // Performance optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  experimental: {
+    optimizeCss: true,
+  },
+  poweredByHeader: false,
+  compress: true,
+  // Enable strict mode for better React optimizations
+  reactStrictMode: true,
+  // Optimize production builds
+  swcMinify: true,
 };
 
 export default withSentryConfig(withNextIntl(nextConfig), {

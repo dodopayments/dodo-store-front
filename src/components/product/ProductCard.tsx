@@ -12,7 +12,7 @@ import {
   decodeCurrency,
   formatCurrency,
 } from "@/lib/currency-helper";
-import { useStorefront } from "@/hooks/useStorefront";
+import { useStorefrontContext } from "@/context/storefront-context";
 
 export interface ProductCardProps {
   product_id: string;
@@ -117,7 +117,8 @@ export function ProductCard({
   const [checkout, setCheckout] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [showDescription, setShowDescription] = useState(false);
-  const { checkoutUrl } = useStorefront();
+  const { checkoutUrl } = useStorefrontContext();
+  
   const handleIncrement = useCallback(
     () => setQuantity((prev) => prev + 1),
     []
@@ -131,7 +132,9 @@ export function ProductCard({
   }, [quantity]);
 
   const handleCheckout = useCallback(async () => {
-    window.location.href = `${checkoutUrl}/buy/${product_id}?quantity=${quantity}`;
+    if (checkoutUrl) {
+      window.location.href = `${checkoutUrl}/buy/${product_id}?quantity=${quantity}`;
+    }
   }, [quantity, product_id, checkoutUrl]);
 
   const formatFrequency = () => {

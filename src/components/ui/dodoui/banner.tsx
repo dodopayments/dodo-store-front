@@ -1,12 +1,13 @@
 
 import Link from "next/link";
 import React from "react";
-import { useStorefront } from "@/hooks/useStorefront";
 
-const Banner =  () => {
-  const { mode } = useStorefront();
+interface BannerProps {
+  mode?: 'test' | 'live';
+}
 
-  if (mode == "live") return null;
+const Banner = ({ mode = 'test' }: BannerProps) => {
+  if (mode === "live") return null;
   return (
     <div className="w-[100vw] absolute z-20 top-0 flex flex-col items-center">
       <div className="h-1 w-[100vw] shadow-md bg-[#22272F] dark:bg-bg-secondary "></div>
