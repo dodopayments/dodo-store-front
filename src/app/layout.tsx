@@ -5,8 +5,6 @@ import { Toaster } from "sonner";
 
 import "./globals.css";
 import { StoreProvider } from "@/store/provider";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
 import FooterPill from "@/components/footer-pill";
 import { CSPostHogProvider } from "@/hooks/posthogProvider";
 
@@ -52,13 +50,9 @@ export const viewport: Viewport = {
   ],
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // const locale = await getLocale();
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
   return (
     <StoreProvider>
       <CSPostHogProvider>
@@ -75,13 +69,11 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <NextIntlClientProvider messages={messages}>
-              <main >
-                <Toaster position="top-right" richColors />
-                {children}
-                <FooterPill align="end" />
-              </main>
-            </NextIntlClientProvider>
+            <main >
+              <Toaster position="top-right" richColors />
+              {children}
+              <FooterPill align="end" />
+            </main>
           </ThemeProvider>
           </body>
         </html>

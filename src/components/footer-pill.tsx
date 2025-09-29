@@ -1,5 +1,7 @@
+"use client";
 /* eslint-disable @next/next/no-img-element */
 import { cn } from "@/lib/utils";
+import { t } from "@/lib/i18n";
 
 import Link from "next/link";
 import React from "react";
@@ -33,7 +35,7 @@ const FooterPill = ({
             className="object-cover object-center"
           />
           <p className="text-sm w-full text-nowrap font-light tracking-[-0.22px] font-display">
-            Powered by Dodo Payments
+            {t("app.poweredBy", { brand: "Dodo Payments" })}
           </p>
         </div>
       </Link>

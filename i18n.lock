@@ -1,0 +1,17 @@
+version: 1
+checksums:
+  63f4c97e43b1d06779a7f553869f769a:
+    app/title: 9a4c11ee2d26cbea9f3abe1170224ee1
+    app/description: 427ac1900f09b9708e68636d1a0ba7ea
+    app/poweredBy: 0be0abea1ae8a4fde286f0b0893f7ed4
+    pages/slug/sections/products: a003449ecbde6b7a73044f46ea6bbe75
+    pages/slug/sections/subscriptions: 0d17f4d8d660df40b41d82e0171af6ad
+    pages/slug/notFound/title: 9f95197958d37961ac8ba9877b28a749
+    pages/slug/notFound/description: f6c5962ba2b504a1d9656ae24a2d87f7
+    pages/error/genericTitle: a3cd2f01c073f1f5ff436d4b132d39cf
+    pages/error/genericDescription: 89066e73b84bc02ffdb5a59cc0fd0783
+    pages/product/actions/purchase: 8047e4f1fa2c312dde88dc0f7003eb4b
+    pages/product/actions/buyNow: 160f74eb5551457ab753d26d745ff710
+    pages/product/aria/showDescription: 83eb8d53c62614a59be7f0e59bd0ff0c
+    pages/product/aria/hideDescription: 2542d0700985d5bdfc8b7624ff101898
+    pages/product/trialDays: ef5ebb31626a0b7b5c63b726e1a4677a

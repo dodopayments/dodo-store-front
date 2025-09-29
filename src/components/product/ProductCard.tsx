@@ -13,6 +13,7 @@ import {
   formatCurrency,
 } from "@/lib/currency-helper";
 import { useStorefront } from "@/hooks/useStorefront";
+import { t } from "@/lib/i18n";
 
 export interface ProductCardProps {
   product_id: string;
@@ -60,7 +61,7 @@ const ProductImage = memo(function ProductImage({
             <p className="text-text-primary text-sm">{description}</p>
             {trial_period_days && trial_period_days > 0 ? (
               <p className="text-text-primary absolute bottom-0 left-0 border-2 border-border-secondary dark:border-border-primary rounded-md p-1 px-2 text-xs">
-                {trial_period_days} day trial
+                {t("pages.product.trialDays", { days: trial_period_days })}
               </p>
             ) : null}
           </div>
@@ -74,7 +75,9 @@ const ProductImage = memo(function ProductImage({
       onClick={onToggleDescription}
       type="button"
       className="absolute z-30 bg-bg-secondary p-1 bottom-0 right-0"
-      aria-label={showDescription ? "Hide description" : "Show description"}
+      aria-label={showDescription
+        ? t("pages.product.aria.hideDescription")
+        : t("pages.product.aria.showDescription")}
       style={{
         borderRadius: "8px 0 7px 0px",
         zIndex: 30,
@@ -220,7 +223,7 @@ export function ProductCard({
               effect="expandIcon"
               icon={<ArrowRight className="w-5 h-5" />}
             >
-              Purchase
+              {t("pages.product.actions.purchase")}
             </Button>
           </motion.div>
         ) : (
@@ -242,7 +245,7 @@ export function ProductCard({
               variant="secondary"
               onClick={handleCheckout}
             >
-              Buy now
+              {t("pages.product.actions.buyNow")}
             </Button>
           </motion.div>
         )}

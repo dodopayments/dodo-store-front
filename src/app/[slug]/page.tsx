@@ -13,6 +13,7 @@ import Banner from "@/components/ui/dodoui/banner";
 import { ProductCardProps } from "@/components/product/ProductCard";
 import { useStorefront } from "@/hooks/useStorefront";
 import Head from "next/head";
+import { t } from "@/lib/i18n";
 
 export default function Page() {
   const { api, slug, isLoading } = useStorefront();
@@ -25,49 +26,42 @@ export default function Page() {
     if (!isLoading && slug) {
       const fetchData = async () => {
         try {
-          const [businessRes, productsRes, subscriptionsRes] =
-            await Promise.all([
-              api.get(`/storefront/${slug}`),
-              api.get(`/storefront/${slug}/products`, {
-                params: { recurring: false, page_size: 100 },
-              }),
-              api.get(`/storefront/${slug}/products`, {
-                params: { recurring: true, page_size: 100 },
-              }),
-            ]);
+          const [businessRes, productsRes, subscriptionsRes] = await Promise.all([
+            api.get(`/storefront/${slug}`),
+            api.get(`/storefront/${slug}/products`, {
+              params: { recurring: false, page_size: 100 },
+            }),
+            api.get(`/storefront/${slug}/products`, {
+              params: { recurring: true, page_size: 100 },
+            }),
+          ]);
 
           setBusiness(businessRes.data);
 
           setProducts(
-            productsRes.data.items.map(
-              (product: OneTimeProductApiResponse) => ({
-                product_id: product.product_id,
-                name: product.name,
-                image: product.image,
-                price: product.price,
-                pay_what_you_want: product.price_detail?.pay_what_you_want,
-                description: product.description,
-                currency: product.currency,
-              })
-            )
+            productsRes.data.items.map((product: OneTimeProductApiResponse) => ({
+              product_id: product.product_id,
+              name: product.name,
+              image: product.image,
+              price: product.price,
+              pay_what_you_want: product.price_detail?.pay_what_you_want,
+              description: product.description,
+              currency: product.currency,
+            }))
           );
 
           setSubscriptions(
-            subscriptionsRes.data.items.map(
-              (product: RecurringProductApiResponse) => ({
-                product_id: product.product_id,
-                name: product.name,
-                image: product.image,
-                price: product.price,
-                description: product.description,
-                currency: product.currency,
-                payment_frequency_count:
-                  product.price_detail?.payment_frequency_count,
-                payment_frequency_interval:
-                  product.price_detail?.payment_frequency_interval,
-                trial_period_days: product.price_detail?.trial_period_days,
-              })
-            )
+            subscriptionsRes.data.items.map((product: RecurringProductApiResponse) => ({
+              product_id: product.product_id,
+              name: product.name,
+              image: product.image,
+              price: product.price,
+              description: product.description,
+              currency: product.currency,
+              payment_frequency_count: product.price_detail?.payment_frequency_count,
+              payment_frequency_interval: product.price_detail?.payment_frequency_interval,
+              trial_period_days: product.price_detail?.trial_period_days,
+            }))
           );
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -97,12 +91,8 @@ export default function Page() {
           <LinkBreak className="w-6 h-6" />
         </div>
         <div className="text-center p-8">
-          <h1 className="text-2xl font-semibold font-display mb-2">
-            Storefront Not Found
-          </h1>
-          <p className="text-text-secondary">
-            This storefront does not exist or is no longer available.
-          </p>
+          <h1 className="text-2xl font-semibold font-display mb-2">{t("pages.slug.notFound.title")}</h1>
+          <p className="text-text-secondary">{t("pages.slug.notFound.description")}</p>
         </div>
       </main>
     );
@@ -117,12 +107,12 @@ export default function Page() {
       <Header business={business} />
       <section className="flex flex-col pb-20 items-center max-w-[1145px] mx-auto justify-center mt-10 px-4">
         {products.length > 0 && (
-          <ProductGrid title="Products" products={products} />
+          <ProductGrid title={t("pages.slug.sections.products")} products={products} />
         )}
 
         {subscriptions.length > 0 && (
           <div className="mt-8 w-full">
-            <ProductGrid title="Subscriptions" products={subscriptions} />
+            <ProductGrid title={t("pages.slug.sections.subscriptions")} products={subscriptions} />
           </div>
         )}
       </section>

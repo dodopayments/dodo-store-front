@@ -1,0 +1,34 @@
+{
+  "app": {
+    "title": "Dodo Payments",
+    "description": "Starten und akzeptieren Sie globale Zahlungen in weniger als 60 Minuten",
+    "poweredBy": "Bereitgestellt von {brand}"
+  },
+  "pages": {
+    "slug": {
+      "sections": {
+        "products": "Produkte",
+        "subscriptions": "Abonnements"
+      },
+      "notFound": {
+        "title": "Storefront nicht gefunden",
+        "description": "Diese Storefront existiert nicht oder ist nicht mehr verfügbar."
+      }
+    },
+    "error": {
+      "genericTitle": "Etwas ist schiefgelaufen",
+      "genericDescription": "Möglicherweise haben Sie ein Problem mit der Netzwerkverbindung, der Link ist abgelaufen oder der Link/Storefront ist ungültig."
+    },
+    "product": {
+      "actions": {
+        "purchase": "Kaufen",
+        "buyNow": "Jetzt kaufen"
+      },
+      "aria": {
+        "showDescription": "Beschreibung anzeigen",
+        "hideDescription": "Beschreibung ausblenden"
+      },
+      "trialDays": "{days}-tägige Testversion"
+    }
+  }
+}

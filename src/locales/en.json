@@ -1,0 +1,34 @@
+{
+  "app": {
+    "title": "Dodo Payments",
+    "description": "Launch and Accept Global Payments in less than 60 minutes",
+    "poweredBy": "Powered by {brand}"
+  },
+  "pages": {
+    "slug": {
+      "sections": {
+        "products": "Products",
+        "subscriptions": "Subscriptions"
+      },
+      "notFound": {
+        "title": "Storefront Not Found",
+        "description": "This storefront does not exist or is no longer available."
+      }
+    },
+    "error": {
+      "genericTitle": "Something went wrong",
+      "genericDescription": "You might be having a network connection problem, the link might be expired, or the link/storefront might be invalid."
+    },
+    "product": {
+      "actions": {
+        "purchase": "Purchase",
+        "buyNow": "Buy now"
+      },
+      "aria": {
+        "showDescription": "Show description",
+        "hideDescription": "Hide description"
+      },
+      "trialDays": "{days} day trial"
+    }
+  }
+}
