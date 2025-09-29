@@ -94,6 +94,29 @@ We take inspiration for structure and DX from the Billing SDK project: [dodopaym
 
 ---
 
+## Translation Workflow (lingo.dev CLI)
+
+- Authenticate (one time per machine):
+```bash
+npm run i18n:auth
+```
+- Translate all locales (extract + translate):
+```bash
+npm run i18n:run
+```
+- Check translation status:
+```bash
+npm run i18n:status
+```
+
+Configuration lives in `i18n.json`. Translations are stored in `src/locales/*.json` (default locale `en`).
+
+Tips:
+- Switch locale locally with a query param: `?locale=de` (supports `de`, `es`, `fr`). Falls back to `en`.
+- `i18n.lock` tracks translation state; commit it with locale updates.
+
+---
+
 ## Security
 
 If you discover a vulnerability, please review [`SECURITY.md`](SECURITY.md) for our coordinated disclosure process.
