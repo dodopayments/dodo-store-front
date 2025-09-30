@@ -21,3 +21,11 @@ export function useServerHeaders() {
   // Small helper to get a snapshot of headers in server context
   return headers();
 }
+
+export function getCheckoutBaseUrl(mode: Mode): string {
+  const base = mode === "live" ? process.env.DODO_LIVE_CHECKOUT_URL : process.env.DODO_TEST_CHECKOUT_URL;
+  if (!base) {
+    throw new Error(`Missing checkout base URL for mode=${mode}. Set DODO_LIVE_CHECKOUT_URL and DODO_TEST_CHECKOUT_URL.`);
+  }
+  return base.replace(/\/$/, "");
+}
