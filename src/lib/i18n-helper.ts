@@ -4,7 +4,8 @@ import { Locale } from "@/i18n/config";
 import { defaultLocale } from "@/i18n/config";
 import { cookies } from "next/headers";
 
-const COOKIE_NAME = "NEXT_LOCALE";
+// lingo.dev Compiler reads the `lingo-locale` cookie
+const COOKIE_NAME = "lingo-locale";
 
 export async function getUserLocale() {
   return (await cookies()).get(COOKIE_NAME)?.value || defaultLocale;
