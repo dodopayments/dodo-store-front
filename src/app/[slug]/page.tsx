@@ -83,11 +83,12 @@ async function getData(slug: string) {
   return { business, products, subscriptions, mode, checkoutBaseUrl } as const;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
     const h = await headers();
     const origin = getOrigin(h);
-    const res = await fetch(`${origin}/api/storefront/${params.slug}/business`, {
+    const { slug } = await params;
+    const res = await fetch(`${origin}/api/storefront/${slug}/business`, {
       cache: "no-store",
     });
     if (!res.ok) return { title: "Dodo Payments" };
@@ -98,8 +99,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const data = await getData(params.slug);
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const data = await getData(slug);
   if ("notFound" in data) return notFound();
 
   const { business, products, subscriptions, mode, checkoutBaseUrl } = data;
