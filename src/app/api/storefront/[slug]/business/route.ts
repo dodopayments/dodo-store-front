@@ -5,11 +5,11 @@ import { getBusiness } from "@/lib/server/storefront-client";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const h = await headers();
   const mode = resolveModeFromHost(h);
-  const slug = params.slug;
+  const { slug } = await params;
 
   if (!slug) {
     return NextResponse.json(
