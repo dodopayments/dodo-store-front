@@ -1,118 +1,109 @@
-"use client";
-import { useEffect, useState } from "react";
 import Header, { Business } from "@/components/header";
 import { ProductGrid } from "@/components/product/ProductGrid";
-
-import { LinkBreak } from "@phosphor-icons/react/dist/ssr";
-import LoadingOverlay from "@/components/loading-overlay";
-import {
-  OneTimeProductApiResponse,
-  RecurringProductApiResponse,
-} from "@/type/product";
 import Banner from "@/components/ui/dodoui/banner";
 import { ProductCardProps } from "@/components/product/ProductCard";
-import { useStorefront } from "@/hooks/useStorefront";
-import Head from "next/head";
+import { headers } from "next/headers";
+import { getOrigin } from "@/lib/server/resolve-storefront";
+import { notFound } from "next/navigation";
 
-export default function Page() {
-  const { api, slug, isLoading } = useStorefront();
-  const [business, setBusiness] = useState<Business | null>(null);
-  const [products, setProducts] = useState<ProductCardProps[]>([]);
-  const [subscriptions, setSubscriptions] = useState<ProductCardProps[]>([]);
-  const [loading, setLoading] = useState(true);
+type ProductsResponse = {
+  items: Array<{
+    product_id: string;
+    name: string;
+    image?: string | null;
+    price: number;
+    currency: string;
+    description?: string | null;
+    price_detail?: {
+      pay_what_you_want?: boolean;
+      payment_frequency_count?: number;
+      payment_frequency_interval?: string;
+      trial_period_days?: number;
+    };
+  }>;
+};
 
-  useEffect(() => {
-    if (!isLoading && slug) {
-      const fetchData = async () => {
-        try {
-          const [businessRes, productsRes, subscriptionsRes] =
-            await Promise.all([
-              api.get(`/storefront/${slug}`),
-              api.get(`/storefront/${slug}/products`, {
-                params: { recurring: false, page_size: 100 },
-              }),
-              api.get(`/storefront/${slug}/products`, {
-                params: { recurring: true, page_size: 100 },
-              }),
-            ]);
+async function getData(slug: string) {
+  const h = await headers();
+  const origin = getOrigin(h);
 
-          setBusiness(businessRes.data);
+  const businessReq = fetch(`${origin}/api/storefront/${slug}/business`, {
+    cache: "no-store",
+  });
+  const productsReq = fetch(
+    `${origin}/api/storefront/${slug}/products?page_size=100&recurring=false`,
+    { cache: "no-store" }
+  );
+  const subsReq = fetch(
+    `${origin}/api/storefront/${slug}/subscriptions?page_size=100`,
+    { cache: "no-store" }
+  );
 
-          setProducts(
-            productsRes.data.items.map(
-              (product: OneTimeProductApiResponse) => ({
-                product_id: product.product_id,
-                name: product.name,
-                image: product.image,
-                price: product.price,
-                pay_what_you_want: product.price_detail?.pay_what_you_want,
-                description: product.description,
-                currency: product.currency,
-              })
-            )
-          );
+  const [businessRes, productsRes, subsRes] = await Promise.all([
+    businessReq,
+    productsReq,
+    subsReq,
+  ]);
 
-          setSubscriptions(
-            subscriptionsRes.data.items.map(
-              (product: RecurringProductApiResponse) => ({
-                product_id: product.product_id,
-                name: product.name,
-                image: product.image,
-                price: product.price,
-                description: product.description,
-                currency: product.currency,
-                payment_frequency_count:
-                  product.price_detail?.payment_frequency_count,
-                payment_frequency_interval:
-                  product.price_detail?.payment_frequency_interval,
-                trial_period_days: product.price_detail?.trial_period_days,
-              })
-            )
-          );
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          setBusiness(null);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchData();
-    }
-  }, [api, slug, isLoading]);
-
-  useEffect(() => {
-    document.title = business?.name
-      ? `${business?.name}`
-      : "Dodo Payments";
-  }, [business]);
-  if (loading || isLoading) {
-    return <LoadingOverlay />;
+  if (businessRes.status === 404) {
+    return { notFound: true as const };
+  }
+  if (!businessRes.ok) {
+    throw new Error(`Business fetch failed: ${businessRes.status}`);
   }
 
-  if (!business) {
-    return (
-      <main className="min-h-screen bg-bg-primary flex flex-col items-center justify-center">
-        <div className="rounded-full bg-bg-secondary w-fit p-4">
-          <LinkBreak className="w-6 h-6" />
-        </div>
-        <div className="text-center p-8">
-          <h1 className="text-2xl font-semibold font-display mb-2">
-            Storefront Not Found
-          </h1>
-          <p className="text-text-secondary">
-            This storefront does not exist or is no longer available.
-          </p>
-        </div>
-      </main>
-    );
+  const business = (await businessRes.json()) as Business;
+  const productsJson = (await productsRes.json()) as ProductsResponse;
+  const subsJson = (await subsRes.json()) as ProductsResponse;
+
+  const products: ProductCardProps[] = (productsJson.items || []).map((p) => ({
+    product_id: p.product_id,
+    name: p.name,
+    image: p.image || undefined,
+    price: p.price,
+    pay_what_you_want: p.price_detail?.pay_what_you_want,
+    description: p.description || "",
+    currency: p.currency,
+  }));
+
+  const subscriptions: ProductCardProps[] = (subsJson.items || []).map((p) => ({
+    product_id: p.product_id,
+    name: p.name,
+    image: p.image || undefined,
+    price: p.price,
+    description: p.description || "",
+    currency: p.currency,
+    payment_frequency_count: p.price_detail?.payment_frequency_count,
+    payment_frequency_interval: p.price_detail?.payment_frequency_interval,
+    trial_period_days: p.price_detail?.trial_period_days,
+  }));
+
+  return { business, products, subscriptions } as const;
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  try {
+    const h = await headers();
+    const origin = getOrigin(h);
+    const res = await fetch(`${origin}/api/storefront/${params.slug}/business`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return { title: "Dodo Payments" };
+    const business = (await res.json()) as Business;
+    return { title: business.name ?? "Dodo Payments" };
+  } catch {
+    return { title: "Dodo Payments" };
   }
+}
+
+export default async function Page({ params }: { params: { slug: string } }) {
+  const data = await getData(params.slug);
+  if ("notFound" in data) return notFound();
+
+  const { business, products, subscriptions } = data;
 
   return (
     <main className="min-h-screen bg-bg-primary">
-      <Head>
-        <title>{business.name}</title>
-      </Head>
       <Banner />
       <Header business={business} />
       <section className="flex flex-col pb-20 items-center max-w-[1145px] mx-auto justify-center mt-10 px-4">
