@@ -3,7 +3,7 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import Banner from "@/components/ui/dodoui/banner";
 import { ProductCardProps } from "@/components/product/ProductCard";
 import { headers } from "next/headers";
-import { getOrigin } from "@/lib/server/resolve-storefront";
+import { getOrigin, getCheckoutBaseUrl, resolveModeFromHost } from "@/lib/server/resolve-storefront";
 import { notFound } from "next/navigation";
 
 type ProductsResponse = {
@@ -26,6 +26,8 @@ type ProductsResponse = {
 async function getData(slug: string) {
   const h = await headers();
   const origin = getOrigin(h);
+  const mode = resolveModeFromHost(h);
+  const checkoutBaseUrl = getCheckoutBaseUrl(mode);
 
   const businessReq = fetch(`${origin}/api/storefront/${slug}/business`, {
     cache: "no-store",
@@ -78,7 +80,7 @@ async function getData(slug: string) {
     trial_period_days: p.price_detail?.trial_period_days,
   }));
 
-  return { business, products, subscriptions } as const;
+  return { business, products, subscriptions, mode, checkoutBaseUrl } as const;
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
@@ -100,20 +102,20 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const data = await getData(params.slug);
   if ("notFound" in data) return notFound();
 
-  const { business, products, subscriptions } = data;
+  const { business, products, subscriptions, mode, checkoutBaseUrl } = data;
 
   return (
     <main className="min-h-screen bg-bg-primary">
-      <Banner />
+      <Banner mode={mode} />
       <Header business={business} />
       <section className="flex flex-col pb-20 items-center max-w-[1145px] mx-auto justify-center mt-10 px-4">
         {products.length > 0 && (
-          <ProductGrid title="Products" products={products} />
+          <ProductGrid title="Products" products={products} checkoutBaseUrl={checkoutBaseUrl} />
         )}
 
         {subscriptions.length > 0 && (
           <div className="mt-8 w-full">
-            <ProductGrid title="Subscriptions" products={subscriptions} />
+            <ProductGrid title="Subscriptions" products={subscriptions} checkoutBaseUrl={checkoutBaseUrl} />
           </div>
         )}
       </section>

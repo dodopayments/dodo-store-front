@@ -12,7 +12,6 @@ import {
   decodeCurrency,
   formatCurrency,
 } from "@/lib/currency-helper";
-import { useStorefront } from "@/hooks/useStorefront";
 
 export interface ProductCardProps {
   product_id: string;
@@ -27,6 +26,10 @@ export interface ProductCardProps {
   payment_frequency_interval?: string;
   trial_period_days?: number;
 }
+
+type ProductCardComponentProps = ProductCardProps & {
+  checkoutBaseUrl: string;
+};
 
 interface ProductImageProps {
   image?: string;
@@ -113,11 +116,11 @@ export function ProductCard({
   pay_what_you_want,
   payment_frequency_interval,
   trial_period_days,
-}: ProductCardProps) {
+  checkoutBaseUrl,
+}: ProductCardComponentProps) {
   const [checkout, setCheckout] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [showDescription, setShowDescription] = useState(false);
-  const { checkoutUrl } = useStorefront();
   const handleIncrement = useCallback(
     () => setQuantity((prev) => prev + 1),
     []
@@ -131,8 +134,8 @@ export function ProductCard({
   }, [quantity]);
 
   const handleCheckout = useCallback(async () => {
-    window.location.href = `${checkoutUrl}/buy/${product_id}?quantity=${quantity}`;
-  }, [quantity, product_id, checkoutUrl]);
+    window.location.href = `${checkoutBaseUrl}/buy/${product_id}?quantity=${quantity}`;
+  }, [quantity, product_id, checkoutBaseUrl]);
 
   const formatFrequency = () => {
     if (!payment_frequency_count || !payment_frequency_interval) return "";
