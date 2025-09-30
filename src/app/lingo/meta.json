@@ -1,0 +1,257 @@
+{
+  "version": 0.1,
+  "files": {
+    "../components/footer-pill.tsx": {
+      "scopes": {
+        "3/0/init/body/0/argument/1/1/1-alt": {
+          "type": "attribute",
+          "hash": "ab7fcfe33af795f928ad71ce45644474",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "logo"
+        },
+        "3/0/init/body/0/argument/1/1/3": {
+          "type": "element",
+          "hash": "2bb92a81f115d50f0ad08c7c51c94d56",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Powered by Dodo Payments"
+        }
+      }
+    },
+    "../components/header.tsx": {
+      "scopes": {
+        "1/0/init/body/0/argument/1/1-alt": {
+          "type": "attribute",
+          "hash": "43beddd8ae3e9a7ab8db512b99c84ecf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Business banner"
+        },
+        "1/0/init/body/0/argument/3/1/1-alt": {
+          "type": "attribute",
+          "hash": "6dc170874698fa0b68cbb063f92a5e43",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Business Logo"
+        },
+        "2/0/init/body/0/argument/1/1-alt": {
+          "type": "attribute",
+          "hash": "43beddd8ae3e9a7ab8db512b99c84ecf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Business banner"
+        },
+        "2/0/init/body/0/argument/3/1/1-alt": {
+          "type": "attribute",
+          "hash": "6dc170874698fa0b68cbb063f92a5e43",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Business Logo"
+        }
+      }
+    },
+    "../components/loading-overlay.tsx": {
+      "scopes": {
+        "0/0/init/body/1/3": {
+          "type": "element",
+          "hash": "82b4ea7ed1439094d7c4be13aaba9a66",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading..."
+        }
+      }
+    },
+    "../components/loading.tsx": {
+      "scopes": {
+        "1/0/init/body/0/argument/3": {
+          "type": "element",
+          "hash": "82b4ea7ed1439094d7c4be13aaba9a66",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading..."
+        }
+      }
+    },
+    "../components/locale-switcher.tsx": {
+      "scopes": {
+        "4/declaration/body/1/argument/3/1": {
+          "type": "element",
+          "hash": "277fd1a41cc237a437cd1d5e4a80463b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Language"
+        }
+      }
+    },
+    "../components/product/ProductCard.tsx": {
+      "scopes": {
+        "10/declaration/body/10/argument/5/1/expression/alternate/3": {
+          "type": "element",
+          "hash": "aeaf1ecb66bbe2157097a9d2161ebdf3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Buy now"
+        },
+        "10/declaration/body/10/argument/5/1/expression/consequent/1": {
+          "type": "element",
+          "hash": "04d851beef1856cf4316c1acda108d34",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Purchase"
+        },
+        "9/0/init/0/body/0/0/init/body/1/expression/right/1/3/expression/consequent": {
+          "type": "element",
+          "hash": "d2e9c7d455eae1d7688191fe1cd9ea47",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{trial_period_days} day trial"
+        }
+      }
+    },
+    "../components/product/ProductQuantityControl.tsx": {
+      "scopes": {
+        "1/declaration/body/0/argument/1": {
+          "type": "element",
+          "hash": "5070cb6b407644224088a72f2737329e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "-"
+        },
+        "1/declaration/body/0/argument/1-aria-label": {
+          "type": "attribute",
+          "hash": "e0b54684979f62bd0a0c902c7d4df595",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Decrease quantity"
+        },
+        "1/declaration/body/0/argument/3-aria-label": {
+          "type": "attribute",
+          "hash": "6ea77679027c153af3ceedde66f23d42",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Quantity"
+        },
+        "1/declaration/body/0/argument/5": {
+          "type": "element",
+          "hash": "ba5d525357d3a7937b74fa8f7ee12629",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "+"
+        },
+        "1/declaration/body/0/argument/5-aria-label": {
+          "type": "attribute",
+          "hash": "e9bf310ce68de171c3e4c18901c4f49f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Increase quantity"
+        }
+      }
+    },
+    "../components/ui/dodoui/banner.tsx": {
+      "scopes": {
+        "3/0/init/body/2/argument/3": {
+          "type": "element",
+          "hash": "66b364bf16676200220c1f1d833b02c5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "You are in Test Mode.<element:Link>Learn More</element:Link>"
+        }
+      }
+    },
+    "[slug]/page.tsx": {
+      "scopes": {
+        "10/declaration/body/8/consequent/0/argument/3/1": {
+          "type": "element",
+          "hash": "09de7a61d4a139dc927fb51f63129362",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Storefront Not Found"
+        },
+        "10/declaration/body/8/consequent/0/argument/3/3": {
+          "type": "element",
+          "hash": "228fefb7a64d75917a69c4f576b42964",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "This storefront does not exist or is no longer available."
+        },
+        "10/declaration/body/9/argument/7/1/expression/right-title": {
+          "type": "attribute",
+          "hash": "a003449ecbde6b7a73044f46ea6bbe75",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Products"
+        },
+        "10/declaration/body/9/argument/7/3/expression/right/1-title": {
+          "type": "attribute",
+          "hash": "0d17f4d8d660df40b41d82e0171af6ad",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Subscriptions"
+        }
+      }
+    },
+    "error.tsx": {
+      "scopes": {
+        "2/0/init/body/0/argument/3": {
+          "type": "element",
+          "hash": "e4ab77446826e78e63e006f2a15b12c6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Something went wrong"
+        },
+        "2/0/init/body/0/argument/5": {
+          "type": "element",
+          "hash": "bb4fc426d9a1e9b7a834831c7220b936",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "You might be having a network connection problem, the link might be expired, or the link/storefront might be invalid."
+        }
+      }
+    },
+    "not-found/page.tsx": {
+      "scopes": {
+        "2/0/init/body/0/argument/3": {
+          "type": "element",
+          "hash": "e4ab77446826e78e63e006f2a15b12c6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Something went wrong"
+        },
+        "2/0/init/body/0/argument/5": {
+          "type": "element",
+          "hash": "bb4fc426d9a1e9b7a834831c7220b936",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "You might be having a network connection problem, the link might be expired, or the link/storefront might be invalid."
+        }
+      }
+    }
+  }
+}

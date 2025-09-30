@@ -65,6 +65,54 @@ Open http://localhost:3000
 
 ---
 
+## Translations (Lingo.dev Compiler)
+
+This app uses Lingo.dev Compiler to localize UI text at build time without changing components. The compiler extracts strings from `src/app/`, generates dictionaries under `lingo/`, and injects translations during build.
+
+### Setup
+
+- **API key**: Obtain from Lingo.dev Engine and set the environment variable before running builds/dev:
+
+```bash
+export LINGO_API_KEY="<your_api_key>"
+```
+
+- **Locales**: Source locale is `en`. Target locales configured in `next.config.ts` are `de` and `es` for this PR.
+
+### Run
+
+- Development:
+
+```bash
+npm run dev
+```
+
+- Production build:
+
+```bash
+npm run build
+npm start
+```
+
+The compiler will create/update dictionaries in the `lingo/` directory and use them to render localized content.
+
+### Switch locales
+
+- The current locale is read from the `lingo-locale` cookie (defaults to `en`). You can switch locales by setting this cookie in the browser DevTools Application tab, or via a simple link/action that sets the cookie on the server using `setUserLocale(locale)` from `src/lib/i18n-helper.ts`.
+
+Examples:
+- Set to German: `lingo-locale=de`
+- Set to Spanish: `lingo-locale=es`
+
+Reload the page after changing the cookie.
+
+### Notes
+
+- Dictionaries are versioned by content fingerprint; only changed strings retranslate.
+- If you see missing translations during development, rebuild or refresh once the dictionary updates.
+
+---
+
 ## Project Structure
 
 Key folders:
