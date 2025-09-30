@@ -39,6 +39,22 @@ export default {
           },
           hash: "6dc170874698fa0b68cbb063f92a5e43",
         },
+        "2/0/init/body/0/argument/1/1-alt": {
+          content: {
+            de: "Business-Banner",
+            en: "Business banner",
+            es: "Banner de negocios",
+          },
+          hash: "43beddd8ae3e9a7ab8db512b99c84ecf",
+        },
+        "2/0/init/body/0/argument/3/1/1-alt": {
+          content: {
+            de: "Business-Logo",
+            en: "Business Logo",
+            es: "Logo de negocios",
+          },
+          hash: "6dc170874698fa0b68cbb063f92a5e43",
+        },
       },
     },
     "../components/loading-overlay.tsx": {
@@ -62,6 +78,18 @@ export default {
             es: "Cargando...",
           },
           hash: "82b4ea7ed1439094d7c4be13aaba9a66",
+        },
+      },
+    },
+    "../components/locale-switcher.tsx": {
+      entries: {
+        "4/declaration/body/1/argument/3/1": {
+          content: {
+            de: "Sprache",
+            en: "Language",
+            es: "Idioma",
+          },
+          hash: "277fd1a41cc237a437cd1d5e4a80463b",
         },
       },
     },
