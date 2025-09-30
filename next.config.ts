@@ -1,8 +1,6 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
-
-const withNextIntl = createNextIntlPlugin();
+import lingoCompiler from "lingo.dev/compiler";
 
 const nextConfig: NextConfig = {
   images: {
@@ -15,16 +13,21 @@ const nextConfig: NextConfig = {
   /* config options here */
 };
 
-// Only apply Sentry configuration if environment variables are present
-let config = withNextIntl(nextConfig);
+// Initialize Lingo.dev Compiler for Next.js (App Router under src/app)
+const withLingo = lingoCompiler.next({
+  sourceRoot: "src/app",
+  lingoDir: "lingo",
+  sourceLocale: "en",
+  targetLocales: ["de", "es"],
+  rsc: true,
+  useDirective: false,
+  debug: false,
+  models: "lingo.dev",
+});
 
-if (process.env.NEXT_PUBLIC_SENTRY_PROJECT_NAME) {
-  try {
-    // Dynamic import for Sentry to avoid linter issues
-
-    config = withSentryConfig(config, {
-      // For all available options, see:
-      // https://www.npmjs.com/package/@sentry/webpack-plugin#options
+export default withSentryConfig(withLingo(nextConfig), {
+// For all available options, see:
+// https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
       org: "dodo-payments",
       project: process.env.NEXT_PUBLIC_SENTRY_PROJECT_NAME,

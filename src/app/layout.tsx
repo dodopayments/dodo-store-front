@@ -5,10 +5,10 @@ import { Toaster } from "sonner";
 
 import "./globals.css";
 import { StoreProvider } from "@/store/provider";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
 import FooterPill from "@/components/footer-pill";
 import { CSPostHogProvider } from "@/hooks/posthogProvider";
+import { LingoProvider, loadDictionary } from "lingo.dev/react/rsc";
+import { getUserLocale } from "@/lib/i18n-helper";
 
 // Load fonts
 const inter = Inter({
@@ -55,36 +55,32 @@ export const viewport: Viewport = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // const locale = await getLocale();
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
+  const locale = await getUserLocale();
   return (
     <StoreProvider>
       <CSPostHogProvider>
-        <html
-          lang="en"
-          className={`${inter.variable} ${gabarito.variable} h-full scroll-div`}
-          suppressHydrationWarning
-      >
-       
-        <body className="font-body w-full h-full overflow-x-hidden">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+        <LingoProvider loadDictionary={(locale) => loadDictionary(locale)}>
+          <html
+            lang={locale}
+            className={`${inter.variable} ${gabarito.variable} h-full scroll-div`}
+            suppressHydrationWarning
           >
-            <NextIntlClientProvider messages={messages}>
-              <main >
-                <Toaster position="top-right" richColors />
-                {children}
-                <FooterPill align="end" />
-              </main>
-            </NextIntlClientProvider>
-          </ThemeProvider>
-          </body>
-        </html>
+            <body className="font-body w-full h-full overflow-x-hidden">
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <main>
+                  <Toaster position="top-right" richColors />
+                  {children}
+                  <FooterPill align="end" />
+                </main>
+              </ThemeProvider>
+            </body>
+          </html>
+        </LingoProvider>
       </CSPostHogProvider>
     </StoreProvider>
   );
