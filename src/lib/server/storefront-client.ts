@@ -1,4 +1,4 @@
-import { Mode } from "./resolve-storefront";
+import type { Mode } from "@/types/storefront";
 
 function getBaseUrl(mode: Mode): string {
   const base = mode === "live" ? process.env.DODO_LIVE_API_URL : process.env.DODO_TEST_API_URL;
@@ -20,7 +20,9 @@ async function fetchJson<T>(input: string, init?: RequestInit): Promise<T> {
   });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`Upstream request failed ${res.status}: ${text}`);
+    const err: any = new Error(`Upstream request failed ${res.status}: ${text}`);
+    err.statusCode = res.status;
+    throw err;
   }
   return (await res.json()) as T;
 }
