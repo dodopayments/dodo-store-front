@@ -1,37 +1,8 @@
-import { NextResponse } from "next/server";
-import { headers } from "next/headers";
-import { resolveModeFromHost } from "@/lib/server/resolve-storefront";
+import { createStorefrontRouteHandler } from "@/lib/server/storefront-route-handler";
 import { getProducts } from "@/lib/server/storefront-client";
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ slug: string }> }
-) {
-  const h = await headers();
-  const mode = resolveModeFromHost(h);
-  const { slug } = await params;
-
-  if (!slug) {
-    return NextResponse.json(
-      { error: "Missing storefront slug" },
-      { status: 400 }
-    );
-  }
-
-  const url = new URL(req.url);
-  const page_size = Number(url.searchParams.get("page_size") || 100);
-
-  try {
-    const data = await getProducts(mode, slug, { recurring: true, page_size });
-    return NextResponse.json(data, {
-      status: 200,
-      headers: {
-        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
-      },
-    });
-  } catch (err: any) {
-    const message = err?.message || "Failed to fetch subscriptions";
-    const status = /404/.test(message) ? 404 : 502;
-    return NextResponse.json({ error: message }, { status });
-  }
-}
+export const GET = createStorefrontRouteHandler(async (mode, slug, url) => {
+  const raw = url.searchParams.get("page_size");
+  const page_size = Math.min(Math.max(Number(raw) || 100, 1), 100);
+  return getProducts(mode, slug, { recurring: true, page_size });
+});

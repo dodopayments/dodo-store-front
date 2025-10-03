@@ -1,6 +1,5 @@
 import { headers } from "next/headers";
-
-export type Mode = "test" | "live";
+import type { Mode } from "@/types/storefront";
 
 type HeaderLike = { get(name: string): string | null };
 
@@ -17,9 +16,9 @@ export function getOrigin(h: HeaderLike): string {
   return `${proto}://${host}`;
 }
 
-export function useServerHeaders() {
-  // Small helper to get a snapshot of headers in server context
-  return headers();
+export async function useServerHeaders() {
+  // Small helper to get a snapshot of headers in server context (Next 15: async)
+  return await headers();
 }
 
 export function getCheckoutBaseUrl(mode: Mode): string {

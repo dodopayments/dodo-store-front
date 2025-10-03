@@ -1,7 +1,6 @@
 import Link from "next/link";
 import React from "react";
-
-export type Mode = "test" | "live";
+import type { Mode } from "@/types/storefront";
 
 const Banner = ({ mode }: { mode: Mode }) => {
   if (mode === "live") return null;
