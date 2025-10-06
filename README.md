@@ -60,7 +60,6 @@ For full product docs, see the Storefront guide: [docs.dodopayments.com/features
 4. **Access your storefront**  
    Open [http://localhost:3000/[slug]](http://localhost:3000/[slug]), replacing `[slug]` with your storefront's slug from the dashboard.
 
-Open http://localhost:3000
 
 ### Scripts
 
