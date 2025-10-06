@@ -3,8 +3,12 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import Banner from "@/components/ui/dodoui/banner";
 import { ProductCardProps } from "@/components/product/ProductCard";
 import { headers } from "next/headers";
-import { getOrigin, getCheckoutBaseUrl, resolveModeFromHost } from "@/lib/server/resolve-storefront";
-import { notFound } from "next/navigation";
+import {
+  getOrigin,
+  getCheckoutBaseUrl,
+  resolveModeFromHost,
+} from "@/lib/server/resolve-storefront";
+import { redirect } from "next/navigation";
 
 type ProductsResponse = {
   items: Array<{
@@ -83,7 +87,11 @@ async function getData(slug: string) {
   return { business, products, subscriptions, mode, checkoutBaseUrl } as const;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   try {
     const h = await headers();
     const origin = getOrigin(h);
@@ -99,10 +107,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const data = await getData(slug);
-  if ("notFound" in data) return notFound();
+  if ("notFound" in data) return redirect("/not-found");
 
   const { business, products, subscriptions, mode, checkoutBaseUrl } = data;
 
@@ -112,12 +124,20 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <Header business={business} />
       <section className="flex flex-col pb-20 items-center max-w-[1145px] mx-auto justify-center mt-10 px-4">
         {products.length > 0 && (
-          <ProductGrid title="Products" products={products} checkoutBaseUrl={checkoutBaseUrl} />
+          <ProductGrid
+            title="Products"
+            products={products}
+            checkoutBaseUrl={checkoutBaseUrl}
+          />
         )}
 
         {subscriptions.length > 0 && (
           <div className="mt-8 w-full">
-            <ProductGrid title="Subscriptions" products={subscriptions} checkoutBaseUrl={checkoutBaseUrl} />
+            <ProductGrid
+              title="Subscriptions"
+              products={subscriptions}
+              checkoutBaseUrl={checkoutBaseUrl}
+            />
           </div>
         )}
       </section>
