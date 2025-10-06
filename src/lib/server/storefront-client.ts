@@ -1,5 +1,10 @@
 import type { Mode } from "@/types/storefront";
 
+interface UpstreamHttpError extends Error {
+  statusCode: number;
+  responseBody?: string;
+}
+
 function getBaseUrl(mode: Mode): string {
   const base = mode === "live" ? process.env.DODO_LIVE_API_URL : process.env.DODO_TEST_API_URL;
   if (!base) {
@@ -20,8 +25,10 @@ async function fetchJson<T>(input: string, init?: RequestInit): Promise<T> {
   });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    const err: any = new Error(`Upstream request failed ${res.status}: ${text}`);
+    const err = new Error(`Upstream request failed ${res.status}: ${text}`) as UpstreamHttpError;
+    err.name = "UpstreamHttpError";
     err.statusCode = res.status;
+    err.responseBody = text;
     throw err;
   }
   return (await res.json()) as T;

@@ -29,9 +29,11 @@ export function createStorefrontRouteHandler<T>(fetcher: StorefrontFetcher<T>) {
           "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
         },
       });
-    } catch (err: any) {
-      const message = err?.message || "Failed to fetch data";
-      const status = typeof err?.statusCode === "number" ? err.statusCode : 502;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to fetch data";
+      const status = err && typeof err === 'object' && 'statusCode' in err && typeof err.statusCode === 'number' 
+        ? err.statusCode 
+        : 502;
       return NextResponse.json({ error: message }, { status });
     }
   };
