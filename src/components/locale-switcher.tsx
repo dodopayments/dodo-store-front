@@ -5,8 +5,8 @@ import {
   getUserLocale,
   setUserLocale,
   hasUserLocaleCookie,
-} from "@/lib/i18n-helper";
-import { detectUserLanguage } from "@/lib/client-i18n-helper";
+  detectUserLanguage,
+} from "@/lib/client-i18n-helper";
 import {
   Select,
   SelectContent,
@@ -20,6 +20,7 @@ import { CountryCode } from "libphonenumber-js";
 import { cn } from "@/lib/utils";
 import { Locale } from "@/i18n/config";
 import { LANGUAGES } from "@/constants/langauges";
+import { useRouter } from "next/navigation";
 
 interface Language {
   code: string;
@@ -45,46 +46,37 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
   );
 };
 
-export default function LocaleSwitcher({
-  refresh = false,
-  isOverlay,
-}: {
-  refresh?: boolean;
-  isOverlay?: boolean;
-}) {
+export default function LocaleSwitcher() {
   const [locale, setLocale] = useState<string>("en");
   const [hasInitialized, setHasInitialized] = useState<boolean>(false);
-
+  const router = useRouter();
   const handleLanguageChange = useCallback(
-    async (value: string) => {
+    (value: string) => {
       if (value !== locale) {
-        await setUserLocale(value as Locale);
+        setUserLocale(value as Locale);
         setLocale(value);
-        if (refresh) {
-          window.location.reload();
-        }
+        // Always refresh the page to ensure language change takes effect
+        router.refresh();
       }
     },
-    [locale, refresh]
+    [locale, router]
   );
 
   useEffect(() => {
-    getUserLocale().then((currentLocale) => {
-      setLocale(currentLocale);
-      setHasInitialized(true);
-    });
+    const currentLocale = getUserLocale();
+    setLocale(currentLocale);
+    setHasInitialized(true);
   }, []);
 
   useEffect(() => {
     if (hasInitialized) {
-      hasUserLocaleCookie().then((hasCookie) => {
-        if (!hasCookie) {
-          const detectedLang = detectUserLanguage();
-          if (detectedLang !== "en") {
-            handleLanguageChange(detectedLang);
-          }
+      const hasCookie = hasUserLocaleCookie();
+      if (!hasCookie) {
+        const detectedLang = detectUserLanguage();
+        if (detectedLang !== "en") {
+          handleLanguageChange(detectedLang);
         }
-      });
+      }
     }
   }, [hasInitialized, handleLanguageChange]);
 
@@ -93,20 +85,9 @@ export default function LocaleSwitcher({
       value={locale}
       onValueChange={(value: string) => handleLanguageChange(value)}
     >
-      <SelectTrigger
-        className={cn(
-          "w-fit h-[32px]  p-0",
-          isOverlay ? "border-none shadow-none focus:ring-0 text-white" : ""
-        )}
-      >
+      <SelectTrigger className={cn("w-fit h-[32px]  p-0")}>
         <div className="flex w-fit font-display text-xs items-center gap-2 h-[32px] pl-2">
-          {isOverlay ? (
-            <div className="text-white hover:text-white/80 transition-all duration-100">
-              {languages.find((lang) => lang.code === locale)?.name}
-            </div>
-          ) : (
-            <GlobeSimple className="w-4 h-4" />
-          )}
+          <GlobeSimple className="w-4 h-4" />
         </div>
       </SelectTrigger>
       <SelectContent align="end" className="max-h-[200px]">
