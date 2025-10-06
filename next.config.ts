@@ -1,6 +1,7 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 import lingoCompiler from "lingo.dev/compiler";
+import { LANGUAGES } from "@/constants/langauges";
 
 const nextConfig: NextConfig = {
   images: {
@@ -18,16 +19,25 @@ const withLingo = lingoCompiler.next({
   sourceRoot: "src/app",
   lingoDir: "lingo",
   sourceLocale: "en",
-  targetLocales: ["de", "es"],
+  targetLocales: LANGUAGES.map((language) => language.code),
   rsc: true,
   useDirective: false,
   debug: false,
-  models: "lingo.dev",
+  models: {
+   "*:*": "openrouter:openai/gpt-4.1-mini",
+  },
 });
 
-export default withSentryConfig(withLingo(nextConfig), {
-// For all available options, see:
-// https://www.npmjs.com/package/@sentry/webpack-plugin#options
+// Only apply Sentry configuration if environment variables are present
+let config = withLingo(nextConfig);
+
+if (process.env.NEXT_PUBLIC_SENTRY_PROJECT_NAME) {
+  try {
+    // Dynamic import for Sentry to avoid linter issues
+
+    config = withSentryConfig(config, {
+      // For all available options, see:
+      // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
       org: "dodo-payments",
       project: process.env.NEXT_PUBLIC_SENTRY_PROJECT_NAME,

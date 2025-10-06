@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import LocaleSwitcher from "./locale-switcher";
 
 export interface Business {
   banner: string;
@@ -35,10 +34,6 @@ const Header = ({ business }: { business: Business }) => {
         <h1 className="mt-12 text-2xl font-semibold font-display text-text-primary">
           {business.name}
         </h1>
-
-        <div className="mt-2">
-          <LocaleSwitcher />
-        </div>
       </section>
     </header>
   );

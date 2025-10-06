@@ -15,3 +15,8 @@ export async function getUserLocale() {
 export async function setUserLocale(locale: Locale) {
   (await cookies()).set(COOKIE_NAME, locale);
 }
+
+export async function hasUserLocaleCookie(): Promise<boolean> {
+  const cookieStore = await cookies();
+  return cookieStore.has(COOKIE_NAME);
+}
