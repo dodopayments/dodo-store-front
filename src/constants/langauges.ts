@@ -1,0 +1,17 @@
+export const LANGUAGES = [
+  { code: "en", name: "English", flag: "GB" },
+  { code: "de", name: "German", flag: "DE" },
+  { code: "ar", name: "Arabic", flag: "SA" },
+  { code: "ca", name: "Catalan", flag: "ES" },
+  { code: "zh", name: "Chinese", flag: "CN" },
+  { code: "es", name: "Spanish", flag: "ES" },
+  { code: "fr", name: "French", flag: "FR" },
+  { code: "he", name: "Hebrew", flag: "IL" },
+  { code: "it", name: "Italian", flag: "IT" },
+  { code: "ja", name: "Japanese", flag: "JP" },
+  { code: "nl", name: "Dutch", flag: "NL" },
+  { code: "pl", name: "Polish", flag: "PL" },
+  { code: "pt", name: "Portuguese", flag: "PT" },
+  { code: "sv", name: "Swedish", flag: "SE" },
+  { code: "tr", name: "Turkish", flag: "TR" },
+];

@@ -1,7 +1,6 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 import lingoCompiler from "lingo.dev/compiler";
-import { LANGUAGES } from "@/constants/langauges";
 
 const nextConfig: NextConfig = {
   images: {
@@ -19,12 +18,27 @@ const withLingo = lingoCompiler.next({
   sourceRoot: "src/app",
   lingoDir: "lingo",
   sourceLocale: "en",
-  targetLocales: LANGUAGES.map((language) => language.code),
+  targetLocales: [
+    "ar",
+    "ca",
+    "de",
+    "zh",
+    "es",
+    "fr",
+    "he",
+    "it",
+    "ja",
+    "nl",
+    "pl",
+    "pt",
+    "sv",
+    "tr",
+  ],
   rsc: true,
   useDirective: false,
   debug: false,
   models: {
-   "*:*": "openrouter:openai/gpt-4.1-mini",
+    "*:*": "openrouter:openai/gpt-4.1-mini",
   },
 });
 
