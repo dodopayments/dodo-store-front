@@ -18,6 +18,22 @@
           "skip": false,
           "overrides": {},
           "content": "Powered by Dodo Payments"
+        },
+        "4/0/init/body/0/argument/3/1/1-alt": {
+          "type": "attribute",
+          "hash": "ab7fcfe33af795f928ad71ce45644474",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "logo"
+        },
+        "4/0/init/body/0/argument/3/1/3": {
+          "type": "element",
+          "hash": "2bb92a81f115d50f0ad08c7c51c94d56",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Powered by Dodo Payments"
         }
       }
     },
@@ -90,6 +106,54 @@
           "skip": false,
           "overrides": {},
           "content": "Language"
+        },
+        "4/declaration/body/6/consequent/0/argument": {
+          "type": "element",
+          "hash": "9f353db6cc16f9b4d823dd0fd0d91a25",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Switch to <function:detectUserLanguage/>"
+        },
+        "4/declaration/body/7/argument": {
+          "type": "element",
+          "hash": "39956d1869bfebd1c73941e59b8f2659",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Switch to English"
+        },
+        "5/declaration/body/6/consequent/0/argument": {
+          "type": "element",
+          "hash": "9f353db6cc16f9b4d823dd0fd0d91a25",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Switch to <function:detectUserLanguage/>"
+        },
+        "5/declaration/body/7/argument": {
+          "type": "element",
+          "hash": "39956d1869bfebd1c73941e59b8f2659",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Switch to English"
+        },
+        "5/declaration/body/7/consequent/0/argument": {
+          "type": "element",
+          "hash": "9f353db6cc16f9b4d823dd0fd0d91a25",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Switch to <function:detectUserLanguage/>"
+        },
+        "5/declaration/body/8/argument": {
+          "type": "element",
+          "hash": "39956d1869bfebd1c73941e59b8f2659",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Switch to English"
         }
       }
     },
@@ -104,6 +168,22 @@
           "content": "Buy now"
         },
         "10/declaration/body/10/argument/5/1/expression/consequent/1": {
+          "type": "element",
+          "hash": "04d851beef1856cf4316c1acda108d34",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Purchase"
+        },
+        "10/declaration/body/9/argument/5/1/expression/alternate/3": {
+          "type": "element",
+          "hash": "aeaf1ecb66bbe2157097a9d2161ebdf3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Buy now"
+        },
+        "10/declaration/body/9/argument/5/1/expression/consequent/1": {
           "type": "element",
           "hash": "04d851beef1856cf4316c1acda108d34",
           "context": "",
@@ -167,6 +247,14 @@
     },
     "../components/ui/dodoui/banner.tsx": {
       "scopes": {
+        "3/0/init/body/1/argument/3": {
+          "type": "element",
+          "hash": "66b364bf16676200220c1f1d833b02c5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "You are in Test Mode.<element:Link>Learn More</element:Link>"
+        },
         "3/0/init/body/2/argument/3": {
           "type": "element",
           "hash": "66b364bf16676200220c1f1d833b02c5",
@@ -179,6 +267,22 @@
     },
     "[slug]/page.tsx": {
       "scopes": {
+        "10/declaration/body/4/argument/5/1/expression/right-title": {
+          "type": "attribute",
+          "hash": "a003449ecbde6b7a73044f46ea6bbe75",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Products"
+        },
+        "10/declaration/body/4/argument/5/3/expression/right/1-title": {
+          "type": "attribute",
+          "hash": "0d17f4d8d660df40b41d82e0171af6ad",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Subscriptions"
+        },
         "10/declaration/body/8/consequent/0/argument/3/1": {
           "type": "element",
           "hash": "09de7a61d4a139dc927fb51f63129362",
