@@ -42,17 +42,23 @@ For full product docs, see the Storefront guide: [docs.dodopayments.com/features
 
 ## Getting Started
 
-1) Install dependencies
+1. **Install dependencies**
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
-2) Run the dev server
+2. **Start the development server**
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
+
+3. **Create a storefront**  
+   Set up a new storefront in your [Dodo Payments dashboard](https://app.dodopayments.com).
+
+4. **Access your storefront**  
+   Open [http://localhost:3000/[slug]](http://localhost:3000/[slug]), replacing `[slug]` with your storefront's slug from the dashboard.
 
 Open http://localhost:3000
 
