@@ -9,6 +9,7 @@ import {
   resolveModeFromHost,
 } from "@/lib/server/resolve-storefront";
 import { redirect } from "next/navigation";
+import EmptyState from "@/components/empty-state";
 
 type ProductsResponse = {
   items: Array<{
@@ -123,6 +124,10 @@ export default async function Page({
       <Banner mode={mode} />
       <Header business={business} />
       <section className="flex flex-col pb-20 items-center max-w-[1145px] mx-auto justify-center mt-10 px-4">
+        {products.length === 0 && subscriptions.length === 0 && (
+          <EmptyState />
+        )}
+
         {products.length > 0 && (
           <ProductGrid
             title="Products"
